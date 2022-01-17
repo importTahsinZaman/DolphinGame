@@ -1,0 +1,139 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Assets/Shark/shark3.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Shark.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Shark/shark2.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Shark/shark1.png" type="Texture" id=4]
+[ext_resource path="res://Assets/gunfireeffect.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/Crosshair.tscn" type="PackedScene" id=6]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 1 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "swim",
+"speed": 3.0
+} ]
+
+[sub_resource type="Animation" id=2]
+resource_name = "GunFireEffect"
+length = 0.05
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../GunFireEffect2:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.05 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.5, 1.2 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("../GunFireEffect2:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.05 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.5, 1.2 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../GunFireEffect2:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+
+[node name="Shark" type="KinematicBody2D"]
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+rotation = 1.5708
+frames = SubResource( 1 )
+animation = "swim"
+frame = 2
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="Gun1" type="Position2D" parent="."]
+position = Vector2( 21.766, -6.61305 )
+
+[node name="Gun2" type="Position2D" parent="."]
+position = Vector2( 21.7726, 5.71775 )
+
+[node name="GunFireEffect" type="Sprite" parent="."]
+position = Vector2( 16.5374, -6.5778 )
+rotation = 1.5708
+scale = Vector2( 0.5, 1.2 )
+texture = ExtResource( 5 )
+
+[node name="GunFireEffect2" type="Sprite" parent="."]
+position = Vector2( 16.5374, 5.51009 )
+rotation = 1.5708
+scale = Vector2( 0.5, 1.2 )
+texture = ExtResource( 5 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../GunFireEffect")
+anims/GunFireEffect = SubResource( 2 )
+anims/RESET = SubResource( 3 )
+
+[node name="Crosshair" parent="." instance=ExtResource( 6 )]
+
+[node name="DashCoolDown" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="timeout" from="DashCoolDown" to="." method="_on_DashCoolDown_timeout"]
