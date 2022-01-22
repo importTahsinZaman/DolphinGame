@@ -4,7 +4,7 @@ onready var shakeTimer = $Timer
 onready var tween = $Tween
 
 var shake_amount = 0
-var default_offset = offset
+var default_offset = Vector2(0,0)
 
 func _ready():
 	set_process(false)

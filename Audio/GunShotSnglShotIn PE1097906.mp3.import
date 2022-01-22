@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/GunShotSnglShotIn PE1097906.mp3-7ac99b4c7b8e45bb2a210995592ebd82.mp3str"
+
+[deps]
+
+source_file="res://Audio/GunShotSnglShotIn PE1097906.mp3"
+dest_files=[ "res://.import/GunShotSnglShotIn PE1097906.mp3-7ac99b4c7b8e45bb2a210995592ebd82.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

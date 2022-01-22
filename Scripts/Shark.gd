@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-export var ACCELERATION = 800
+export var ACCELERATION = 1000
 export var MAX_SPEED = 400
 export var FRICTION = 300
 var velocity = Vector2.ZERO
@@ -11,7 +11,6 @@ var can_fire = true
 
 func _ready():
 	$GunFireEffect.hide()
-	$GunFireEffect2.hide()
 
 func _physics_process(delta):
 	var input_vector = Vector2.ZERO
@@ -28,9 +27,9 @@ func _physics_process(delta):
 		velocity = move_and_slide(velocity + diff)
 		
 	if input_vector == Vector2(0,0):
-		$AnimatedSprite.speed_scale = 0.3
+		$Rocket.hide()
 	else:
-		$AnimatedSprite.speed_scale = 1
+		$AnimationPlayer2.play("rocket")
 	
 	if Input.is_action_just_pressed("dash"):
 		dash()
@@ -43,18 +42,14 @@ func _physics_process(delta):
 
 func shoot():
 	$AnimationPlayer.play("GunFireEffect")
+	$AudioStreamPlayer.play()
 	$Crosshair/AnimationPlayer.play("shoot_animation")
-	get_parent().get_node("MainCamera").shake(300, 0.4, 300)
-	var bullet = BULLET.instance()
-	$Gun1.position.y = rand_range(-4, -9)
-	$Gun2.position.y = rand_range(3, 8)
-	bullet.position = $Gun1.get_global_position()
-	bullet.rotation = rotation
-	get_tree().root.add_child(bullet)
-	var bullet2 = BULLET.instance()
-	bullet2.position = $Gun2.get_global_position()
-	bullet2.rotation = rotation
-	get_tree().root.add_child(bullet2)
+	$MainCamera.shake(300, 0.4, 300)
+	for i in range(3):
+		var bullet = BULLET.instance()
+		bullet.position = $Gun1.get_global_position()
+		bullet.rotation = rotation
+		get_tree().root.add_child(bullet)
 	can_fire = false
 	yield(get_tree().create_timer(0.09), "timeout")
 	can_fire = true
@@ -68,3 +63,4 @@ func dash():
 func _on_DashCoolDown_timeout():
 	MAX_SPEED = 400
 	ACCELERATION = 800
+
